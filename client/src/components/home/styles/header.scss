@@ -1,0 +1,17 @@
+@use "@/assets/sass/mixins" as *;
+
+.header-section {
+	@include linear-background("@/assets/images/banner.png", cover, initial, (rgba(black, 0), rgba(black, 0.2)));
+	@include flex(space-between, center);
+	color: get(white);
+	min-height: 80px;
+	margin-top: 47px;
+	padding: 10px;
+	gap: 1rem;
+	flex-wrap: wrap;
+	border-bottom-right-radius: 20px;
+	div {
+		display: flex;
+		gap: 0.5rem;
+	}
+}

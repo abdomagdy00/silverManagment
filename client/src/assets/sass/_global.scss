@@ -1,0 +1,43 @@
+@use "./variables" as *;
+@use "./mixins" as *;
+@import url("https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+	padding: 0;
+	margin: 0;
+	border: none;
+	outline: none;
+	scroll-behavior: smooth;
+	box-sizing: border-box !important;
+	text-decoration: none !important;
+	list-style: none !important;
+	transition: all 0.2s ease-in-out;
+}
+
+html {
+	width: 100vw;
+	overflow-x: hidden;
+	* ::-webkit-scrollbar {
+		width: 2px !important;
+		height: 5px !important;
+	}
+	::-webkit-scrollbar {
+		width: 10px;
+	}
+	::-webkit-scrollbar-thumb {
+		background: get(primary);
+		border-radius: 10px;
+	}
+	::-webkit-scrollbar-track {
+		background: get(bg-white);
+	}
+	::selection {
+		background: get(primary);
+		color: black;
+		text-shadow: 5px 5px 10px get(primary);
+	}
+}
+
+body {
+	font-family: "Poppins", "El Messiri", sans-serif;
+}

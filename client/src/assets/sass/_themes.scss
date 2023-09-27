@@ -1,0 +1,63 @@
+@use "./variables" as *;
+$themes: ("red", "blue", "purple", "orange", "green", "silver", "cyan");
+
+body[data-mode="dark"] {
+	--white: #222;
+	--dimWhite: #546e7a;
+	--white-bg: #171d21;
+	--black: #fff;
+	--dimBlack: #aaa;
+	--black-bg: #f8f8f8;
+	--black-mode: #000;
+	--border: 1px solid var(--dimWhite);
+	--shadow: 5px 5px 15px var(--primary);
+	background-color: black;
+	.swiper-pagination-bullet {
+		background: get(dark-bg);
+	}
+	.swiper-pagination-bullet-active {
+		background: get(secondary);
+	}
+}
+
+@each $theme in $themes {
+	body[data-theme="#{$theme}"] {
+		@if $theme == "red" {
+			--primary: #e53935;
+			--secondary: #e91e63;
+			--shadow: 5px 5px 15px var(--primary);
+			--tw-gradient-from: #dc143c !important;
+			--tw-gradient-to: #e91e63;
+		}
+		@if $theme == "blue" {
+			--primary: #00a8ff;
+			--secondary: #0097e6;
+			--shadow: 5px 5px 15px var(--primary);
+		}
+		@if $theme == "purple" {
+			--primary: #9c88ff;
+			--secondary: #8c7ae6;
+			--shadow: 5px 5px 15px var(--primary);
+		}
+		@if $theme == "orange" {
+			--primary: #ffa500;
+			--secondary: #e1b12c;
+			--shadow: 5px 5px 15px var(--primary);
+		}
+		@if $theme == "green" {
+			--primary: #4cd137;
+			--secondary: #44bd32;
+			--shadow: 5px 5px 15px var(--primary);
+		}
+		@if $theme == "silver" {
+			--primary: #7f8fa6;
+			--secondary: #718093;
+			--shadow: 5px 5px 15px var(--primary);
+		}
+		@if $theme == "cyan" {
+			--primary: #00bcd4;
+			--secondary: #008b9e;
+			--shadow: 5px 5px 15px var(--primary);
+		}
+	}
+}

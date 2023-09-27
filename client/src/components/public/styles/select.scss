@@ -1,0 +1,11 @@
+@use "@/assets/sass/mixins" as *;
+
+.selectbox {
+	background-color: get(lightWhite);
+	color: get(dimWhite);
+	width: 100%;
+	padding: 10px;
+	font-size: 1rem;
+	border-radius: 10px;
+	margin-bottom: 20px;
+}

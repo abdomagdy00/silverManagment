@@ -1,0 +1,53 @@
+@use "@/assets/sass/mixins" as *;
+
+.navbar-section {
+	@include flex(space-between, center);
+	@include fixed(tl, 0, 0);
+	background-color: get(white);
+	width: 100%;
+	padding: 10px;
+	flex-wrap: wrap;
+	z-index: 1001;
+	.right-side {
+		@include flex(flex-start, center);
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		img {
+			width: 24px;
+			height: 24px;
+		}
+		.nav-title {
+			color: get(primary);
+			font-size: 16px;
+		}
+	}
+	.left-side {
+		i {
+			color: get(primary);
+			font-size: 16px;
+		}
+		.dropdown {
+			@include fixed(tl, 47px, 0);
+			background-color: get(white);
+			min-width: 180px;
+			padding: 20px;
+			scale: 0;
+			box-shadow: get(shadow);
+			transform-origin: top left;
+			border-radius: 0 0 10px 10px;
+			&.open {
+				scale: 1;
+			}
+			.option {
+				@include flex(flex-start, center);
+				color: get(black);
+				gap: 10px;
+				margin-bottom: 10px;
+				border-bottom: 1px solid get(lightWhite);
+				&:last-of-type {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+}

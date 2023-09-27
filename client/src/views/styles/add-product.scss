@@ -1,0 +1,55 @@
+@use "@/assets/sass/mixins" as *;
+
+.add-product {
+	margin-top: 47px;
+	.title {
+		color: get(primary);
+		font-size: 2rem;
+		text-align: center;
+		margin-bottom: 1rem;
+	}
+	.wrapper {
+		padding: 10px;
+		max-width: 600px;
+		margin: auto;
+		input {
+			background-color: get(lightWhite);
+			width: 100%;
+			padding: 10px;
+			font-size: 1rem;
+			border-radius: 10px;
+			margin-bottom: 20px;
+		}
+		input:disabled,
+		select:disabled {
+			background-color: #d3d3d3 !important;
+		}
+		.file {
+			text-align: center;
+			width: 180px;
+			margin: auto;
+			input {
+				background-color: get(white);
+			}
+			label {
+				background-color: get(lightWhite);
+				width: 120px;
+				height: 120px;
+				display: block;
+				border-radius: 50%;
+				overflow: hidden;
+				margin: auto;
+				img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
+			}
+		}
+		.submit-btn {
+			width: 100%;
+			font-size: 1.3rem;
+			font-weight: bold;
+		}
+	}
+}

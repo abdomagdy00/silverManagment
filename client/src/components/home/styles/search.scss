@@ -1,0 +1,21 @@
+@use "@/assets/sass/mixins" as *;
+
+.search-section {
+	@include linear-background("@/assets/images/banner.png", cover, initial, (rgba(black, 0), rgba(black, 0.2)));
+	@include flex(center, center);
+	min-height: 200px;
+	margin-top: 40px;
+	div {
+		@include flex(space-between, center);
+		background-color: get(white);
+		width: 80%;
+		padding: 10px;
+		border-radius: 10px;
+		input {
+			background-color: transparent;
+			width: 100%;
+			font-size: 1rem;
+			margin-left: 10px;
+		}
+	}
+}

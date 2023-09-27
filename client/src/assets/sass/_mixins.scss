@@ -1,0 +1,137 @@
+@mixin flex($justfy, $align) {
+	display: flex;
+	justify-content: $justfy;
+	align-items: $align;
+}
+
+@mixin grid($width) {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax($width, 1fr));
+	gap: 1rem;
+}
+
+@mixin relative($dir, $y, $x) {
+	position: relative;
+	@if $dir == "tl" {
+		top: $y;
+		left: $x;
+	}
+	@if $dir == "tr" {
+		top: $y;
+		right: $x;
+	}
+	@if $dir == "bl" {
+		bottom: $y;
+		left: $x;
+	}
+	@if $dir == "br" {
+		bottom: $y;
+		right: $x;
+	}
+}
+
+@mixin absolute($dir, $y, $x) {
+	position: absolute;
+	@if $dir == "tl" {
+		top: $y;
+		left: $x;
+	}
+	@if $dir == "tr" {
+		top: $y;
+		right: $x;
+	}
+	@if $dir == "bl" {
+		bottom: $y;
+		left: $x;
+	}
+	@if $dir == "br" {
+		bottom: $y;
+		right: $x;
+	}
+}
+
+@mixin fixed($dir, $y, $x) {
+	position: fixed;
+	@if $dir == "tl" {
+		top: $y;
+		left: $x;
+	}
+	@if $dir == "tr" {
+		top: $y;
+		right: $x;
+	}
+	@if $dir == "bl" {
+		bottom: $y;
+		left: $x;
+	}
+	@if $dir == "br" {
+		bottom: $y;
+		right: $x;
+	}
+}
+
+@mixin sticky($dir, $y, $x) {
+	position: sticky;
+	@if $dir == "tl" {
+		top: $y;
+		left: $x;
+	}
+	@if $dir == "tr" {
+		top: $y;
+		right: $x;
+	}
+	@if $dir == "bl" {
+		bottom: $y;
+		left: $x;
+	}
+	@if $dir == "br" {
+		bottom: $y;
+		right: $x;
+	}
+}
+
+@mixin background($url, $size, $attachment) {
+	background: url($url) no-repeat;
+	background-position: center;
+	background-size: $size;
+	background-attachment: $attachment;
+}
+
+@mixin linear-background($url, $size, $attachment, $linear) {
+	background: linear-gradient($linear), url($url) no-repeat;
+	background-position: center;
+	background-size: $size;
+	background-attachment: $attachment;
+}
+
+@mixin width($Width) {
+	@if $Width == "xlg" {
+		@media (min-width: 1200px) {
+			@content;
+		}
+	}
+	@if $Width == "lg" {
+		@media (min-width: 992px) {
+			@content;
+		}
+	}
+	@if $Width == "md" {
+		@media (min-width: 792px) {
+			@content;
+		}
+	}
+	@if $Width == "xsm" {
+		@media (min-width: 576px) {
+			@content;
+		}
+	}
+	@if $Width == "sm" {
+		@media (min-width: 390px) {
+			@content;
+		}
+	}
+}
+
+@function get($att) {
+	@return var(--#{$att});
+}
