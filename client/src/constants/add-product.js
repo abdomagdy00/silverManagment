@@ -3,6 +3,7 @@ import { user } from "@/assets";
 export const formState = {
 	img: user,
 	name: "",
+	count: "",
 	description: "",
 	silverType: "",
 	customePrice: { silverType: "", price: "" },

@@ -5,17 +5,48 @@
 	@include flex(center, center);
 	min-height: 200px;
 	margin-top: 40px;
-	div {
-		@include flex(space-between, center);
-		background-color: get(white);
-		width: 80%;
-		padding: 10px;
-		border-radius: 10px;
-		input {
-			background-color: transparent;
+	.overlay {
+		@include fixed(tl, 0, 0);
+		background-color: rgba(black, 0.5);
+		width: 100%;
+		height: 100%;
+	}
+	.wrapper {
+		width: 100%;
+		max-width: 300px;
+		position: relative;
+		.searchbox {
+			@include flex(space-between, center);
+			background-color: get(white);
+			padding: 10px;
+			border-radius: 10px;
+			&.opened-list {
+				border-radius: 10px 10px 0 0;
+			}
+			input {
+				background-color: transparent;
+				width: 100%;
+				font-size: 1rem;
+				margin-left: 10px;
+			}
+		}
+		.searchlist {
+			@include absolute(tl, 37px, 0);
+			background-color: get(white);
+			max-height: 300px;
 			width: 100%;
-			font-size: 1rem;
-			margin-left: 10px;
+			padding: 10px;
+			overflow-y: auto;
+			box-shadow: get(shadow);
+			border-radius: 0 0 10px 10px;
+			.option {
+				padding-block: 5px;
+				border-bottom: 1px solid #e3e3e3;
+				&.bg {
+					background-color: get(lightWhite);
+					font-weight: bold;
+				}
+			}
 		}
 	}
 }

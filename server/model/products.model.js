@@ -3,14 +3,15 @@ import { model, Schema } from "mongoose";
 const schema = new Schema(
 	{
 		img: String,
-		name: String,
-		description: String,
-		silverType: String,
-		customePrice: { silverType: String, price: String },
-		catagory: String,
-		price: String,
+		name: { type: String, trim: true },
+		count: String,
 		weight: String,
+		catagory: String,
 		gem: String,
+		silverType: String,
+		price: String,
+		customePrice: { silverType: String, price: String },
+		description: String,
 	},
 	{ timestamps: true }
 );

@@ -6,7 +6,7 @@ const router = axios.create(routes.locale);
 
 export const useAxios = (method, url, body, options) => {
 	const [data, setData] = useState();
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [isSubmitted, setIsSubmitted] = useState(false);
 	const [status, setStatus] = useState();
@@ -15,7 +15,7 @@ export const useAxios = (method, url, body, options) => {
 		if (!method || url === "/") return;
 		try {
 			setIsSubmitted(false);
-			setLoading(false);
+			setLoading(true);
 			setError("");
 
 			if (method === "get") {

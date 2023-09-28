@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Home, GetProducts, AddProduct, UpdateProduct, DeleteProduct } from "@/views";
+import { Home, GetProducts, GetProduct, AddProduct, UpdateProduct } from "@/views";
 import { Wrapper } from "@/layout";
 
 function App() {
@@ -11,9 +11,9 @@ function App() {
 			</Route>
 			<Route path="/products" element={<Wrapper />}>
 				<Route index element={<GetProducts />} />
+				<Route path="get-product/:id" element={<GetProduct />} />
 				<Route path="add-product" element={<AddProduct />} />
 				<Route path="update-product" element={<UpdateProduct />} />
-				<Route path="delete-product" element={<DeleteProduct />} />
 			</Route>
 		</Routes>
 	);

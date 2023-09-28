@@ -25,13 +25,9 @@ export const Navbar = () => {
 						<i className="fa fa-plus" />
 						<p className="name">اضافة منتج</p>
 					</Link>
-					<Link to="/products/update-product" className="option" onClick={handleToggler}>
-						<i className="fa fa-gear" />
-						<p className="name">تعديل منتج</p>
-					</Link>
-					<Link to="/products/delete-product" className="option" onClick={handleToggler}>
-						<i className="fa fa-trash-alt" />
-						<p className="name">حذف منتج</p>
+					<Link to="/products/add-product" className="option" onClick={handleToggler}>
+						<i className="fas fa-chart-line" />
+						<p className="name">الاحصائيات</p>
 					</Link>
 				</div>
 			</div>

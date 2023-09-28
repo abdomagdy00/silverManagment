@@ -1,10 +1,20 @@
 import mongoose from "mongoose";
-import { Products } from "../model/products.model.js";
+import { Products, Sales } from "../model/index.js";
+import { updateSales } from "./sales.controller.js";
 
 export const GET_PRODUCTS = async (req, res) => {
 	try {
-		const products = await Products.find();
-		res.status(200).json(products);
+		const { limit, ...query } = req.query;
+		const keys = Object.keys(query);
+
+		const products = await Products.find()
+			.select(keys)
+			.limit(limit || 999);
+
+		const prices = products.map(({ price, count, weight, customePrice: { price: cPrice } }) => (price === "none" ? +cPrice * +count * +weight : +price * +count * +weight)) || [];
+		const total = prices.reduce((prev, cur) => prev + cur, 0);
+
+		res.status(200).json({ count: products.length, totalPrice: total || 0, result: products });
 	} catch (error) {
 		res.status(404).json(`GET_PRODUCTS: ${error.message}`);
 	}
@@ -14,23 +24,39 @@ export const GET_PRODUCT = async (req, res) => {
 	try {
 		if (!req.body) return res.status(400).json({ error: "يجب ادخال التفاصيل المطلوبه للمنتج." });
 
-		const product = await Products.find(req.body);
+		const product = await Products.findOne(req.body);
 		res.status(200).json(product);
 	} catch (error) {
 		res.status(404).json(`GET_PRODUCT: ${error.message}`);
 	}
 };
 
-export const LIST_By_KEY = async (req, res) => {
+export const GET_TOTAL_PRICE = async (req, res) => {
+	try {
+		// Products Price
+		const products = await Products.find();
+		const prices = products.map(({ price, count, weight, customePrice: { price: cPrice } }) => (price === "none" ? +cPrice * count * +weight : +price * count * +weight)) || [];
+		const productPrices = prices.reduce((prev, cur) => prev + cur, 0);
+
+		// Today Sales
+		const sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
+		const orders = sales.orders.map(({ price, weight, count, customePrice: { price: cPrice } }) => (price === "none" ? +cPrice * +weight * +count.sales : +price * +weight * +count.sales));
+		const salePrices = orders.reduce((prev, cur) => +prev + +cur, 0);
+
+		res.status(200).json({ productPrices, salePrices });
+	} catch (error) {
+		res.status(404).json(`GET_PRICE: ${error.message}`);
+	}
+};
+
+export const LIST_BY_KEY = async (req, res) => {
 	try {
 		const [key] = Object.keys(req.query);
 		if (!key) return res.status(400).json({ error: "يجب ادخال نوع واحد علي الاقل" });
 
-		const _products = await Products.find().select(key);
+		const products = await Products.find().select(key);
 
-		const products = _products.reduce((prev, cur) => prev.concat(cur[key]), []);
-
-		res.status(200).json(Array.from(new Set(products)));
+		res.status(200).json(products);
 	} catch (error) {
 		res.status(404).json(`LIST_OF_Types: ${error.message}`);
 	}
@@ -38,7 +64,18 @@ export const LIST_By_KEY = async (req, res) => {
 
 export const CREATE_PRODUCT = async (req, res) => {
 	try {
+		const product = await Products.findOne({ name: req.body.name.trim() });
+		if (product) return res.status(400).json({ error: "هذا المنتج موجود بالفعل" });
+
+		// Add Products
 		await Products.create(req.body);
+
+		// Update Analysis
+		const sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
+		const _product = await Products.findOne({ name: req.body.name.trim() });
+		await updateSales(sales, req.body, _product);
+
+		// Response
 		res.status(200).json({ success: "تم اضافه المنتج بنجاح" });
 	} catch (error) {
 		res.status(404).json(`CREATE_PRODUCT: ${error.message}`);
@@ -48,9 +85,26 @@ export const CREATE_PRODUCT = async (req, res) => {
 export const UPDATE_PRODUCT = async (req, res) => {
 	try {
 		const { id } = req.params;
+		const body = req.body;
 		if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ error: "هذا Id غير صحيح." });
 
-		await Products.findByIdAndUpdate(id, req.body, { new: true });
+		// Check
+		const product = await Products.findOne({ name: body.name });
+		if (!product) return res.status(400).json({ error: "لم يتم العثور علي المنتج" });
+
+		// Update Products
+		await Products.findByIdAndUpdate(id, body, { new: true });
+
+		// Update Analysis
+		let sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
+		if (!sales) {
+			await Sales.create({ orders: [] });
+			let _sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
+			_sales && (await updateSales(_sales, body, product));
+		} else {
+			await updateSales(sales, body, product);
+		}
+
 		res.status(200).json({ success: "تم تعديل المنتج بنجاح" });
 	} catch (error) {
 		res.status(404).json(`UPDATE_PRODUCT: ${error.message}`);
@@ -62,7 +116,16 @@ export const DELETE_PRODUCT = async (req, res) => {
 		const { id } = req.params;
 		if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({ error: "هذا Id غير صحيح." });
 
+		const product = await Products.findById(id);
+		if (!product) return res.status(400).json({ error: "لم يتم العثور علي المنتج" });
+
+		// Delete Product
 		await Products.findByIdAndDelete(id);
+
+		// Update Analysis
+		const sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
+		updateSales(sales, product, product);
+
 		res.status(200).json({ success: "تم حذف المنتج بنجاح" });
 	} catch (error) {
 		res.status(404).json(`DELETE_PRODUCT: ${error.message}`);

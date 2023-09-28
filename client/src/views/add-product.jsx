@@ -5,10 +5,10 @@ import { SelectBox, FileInput } from "@/components";
 import { Alert } from "@/layout";
 import { useAxios } from "@/hooks/useAxios";
 import { user } from "@/assets";
-import "./styles/add-product.scss";
+import "./styles/product.scss";
 
 export const AddProduct = () => {
-	const { data, error, isSubmitted, refetch } = useAxios();
+	const { data, loading, error, isSubmitted, refetch } = useAxios();
 	const [formData, setFormData] = useState(formState);
 	const [total, setTotal] = useState("السعر الاجمالي");
 	const [customePrice, setCustomePrice] = useState(false);
@@ -38,7 +38,7 @@ export const AddProduct = () => {
 				setCustomePrice(() => false);
 				return;
 			} else {
-				setFormData((f) => ({ ...f, price: "" }));
+				setFormData((f) => ({ ...f, silverType: "", price: "" }));
 				setCustomePrice(() => false);
 				return;
 			}
@@ -81,35 +81,78 @@ export const AddProduct = () => {
 					<label htmlFor="image">
 						<img src={formData.img} alt="file" />
 					</label>
-					<FileInput setFormData={setFormData} name="file" id="image" />
+					<FileInput setFormData={setFormData} name="file" disabled={loading} id="image" />
 				</div>
 
-				<input type="url" name="file" placeholder="رايط الصورة (اختباري)..." onChange={handleChange} />
+				<div className="">
+					<label className="field-label">رابط الصورة (اختياري):</label>
+					<input type="url" name="file" disabled={loading} placeholder="رايط الصورة (اختباري)..." onChange={handleChange} />
+				</div>
 
-				<input type="text" name="name" placeholder="اسم المنتج..." value={formData.name} onChange={handleChange} required />
+				<div className="">
+					<label className="field-label">اسم المنتج:</label>
+					<input type="text" name="name" disabled={loading} placeholder="اسم المنتج..." value={formData.name} onChange={handleChange} required />
+				</div>
 
-				<input type="number" name="weight" placeholder="وزن المنتج..." value={formData.weight} onChange={handleChange} required />
+				<div className="">
+					<label className="field-label">وزن المنتج:</label>
+					<input type="number" name="weight" disabled={loading} placeholder="وزن المنتج..." value={formData.weight} onChange={handleChange} required />
+				</div>
+
+				<div className="">
+					<label className="field-label">عدد القطع:</label>
+					<input type="number" name="count" disabled={loading} placeholder="عدد القطع..." value={formData.count} onChange={handleChange} required />
+				</div>
 
 				{customePrice ? (
 					<div className="">
-						<SelectBox label="نوع الفضه..." name="silverType" value={formData.silverType} onChange={handleChange} options={silverTypeOptions} required />
+						<div className="">
+							<label className="field-label">نوع الفضه:</label>
+							<SelectBox label="نوع الفضه..." name="silverType" disabled={loading} value={formData.silverType} onChange={handleChange} options={silverTypeOptions} required />
+						</div>
 						<div className="flex-between">
-							<input type="text" name="custome" id="silverType" value={formData.customePrice.silverType} placeholder="نوع الفضه..." onChange={handleChange} required />
-							<input type="number" name="custome" id="price" value={formData.customePrice.price} placeholder="سعر المنتج..." onChange={handleChange} required />
+							<div className="">
+								<label className="field-label">نوع الفضه الاخر:</label>
+								<input type="text" name="custome" id="silverType" disabled={loading} value={formData.customePrice.silverType} placeholder="نوع الفضه..." onChange={handleChange} required />
+							</div>
+							<div className="">
+								<label className="field-label">سعر الجرام:</label>
+								<input type="number" name="custome" id="price" disabled={loading} value={formData.customePrice.price} placeholder="سعر الجرام..." onChange={handleChange} required />
+							</div>
 						</div>
 					</div>
 				) : (
 					<div className="flex-between">
-						<SelectBox label="نوع الفضه..." name="silverType" value={formData.silverType} onChange={handleChange} options={silverTypeOptions} required />
-						<SelectBox label="سعر المنتج..." name="price" value={formData.price} onChange={handleChange} options={pricesOptions} disabled />
+						<div className="">
+							<label className="field-label">نوع الفضه:</label>
+							<SelectBox label="نوع الفضه..." name="silverType" disabled={loading} value={formData.silverType} onChange={handleChange} options={silverTypeOptions} required />
+						</div>
+						<div className="">
+							<label className="field-label">سعر الجرام:</label>
+							<SelectBox label="سعر الجرام..." name="price" value={formData.price} onChange={handleChange} options={pricesOptions} disabled />
+						</div>
 					</div>
 				)}
 
-				<input type="text" value={total} disabled />
+				<div className="">
+					<label className="field-label">السعر الاجمالي:</label>
+					<input type="text" value={total} disabled />
+				</div>
 
 				<div className="flex-between">
-					<SelectBox label="اسم القسم..." name="catagory" value={formData.catagory} onChange={handleChange} options={catagoryOptions} required />
-					<SelectBox label="نوع الحجر..." name="gem" value={formData.gem} onChange={handleChange} options={gemOptions} required />
+					<div className="">
+						<label className="field-label">اسم القسم:</label>
+						<SelectBox label="اسم القسم..." name="catagory" disabled={loading} value={formData.catagory} onChange={handleChange} options={catagoryOptions} required />
+					</div>
+					<div className="">
+						<label className="field-label">نوع الحجر:</label>
+						<SelectBox label="نوع الحجر..." name="gem" disabled={loading} value={formData.gem} onChange={handleChange} options={gemOptions} required />
+					</div>
+				</div>
+
+				<div className="">
+					<label className="field-label">التفاصيل (اختياري):</label>
+					<input type="text" name="description" disabled={loading} value={formData.description} placeholder="التفاصيل (اختياري)..." onChange={handleChange} />
 				</div>
 
 				<button type="submit" className="btn submit-btn">

@@ -5,8 +5,8 @@ export const SelectBox = ({ name, label, options, onChange, ...rest }) => {
 		return (
 			<select className="selectbox" name={name} onChange={onChange} {...rest}>
 				<option value="">{label || "اختر..."}</option>
-				{options.map(({ name, value }) => (
-					<option className="option" value={value} key={name}>
+				{options.map(({ name }) => (
+					<option className="option" value={name} key={name} selected={rest.value === name}>
 						{name}
 					</option>
 				))}

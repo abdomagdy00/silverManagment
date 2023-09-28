@@ -68,6 +68,10 @@ $vars: ("primary", "secondary", "white", "black", "dimWhite", "dimBlack", "light
 	box-shadow: get(shadow);
 }
 
+.hidden {
+	display: none;
+}
+
 .flex {
 	display: flex;
 }
