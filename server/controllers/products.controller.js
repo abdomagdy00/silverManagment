@@ -40,10 +40,13 @@ export const GET_TOTAL_PRICE = async (req, res) => {
 
 		// Today Sales
 		const sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
-		const orders = sales.orders.map(({ price, weight, count, customePrice: { price: cPrice } }) => (price === "none" ? +cPrice * +weight * +count.sales : +price * +weight * +count.sales));
-		const salePrices = orders.reduce((prev, cur) => +prev + +cur, 0);
-
-		res.status(200).json({ productPrices, salePrices });
+		if (sales) {
+			const orders = sales?.orders.map(({ price, weight, count, customePrice: { price: cPrice } }) => (price === "none" ? +cPrice * +weight * +count.sales : +price * +weight * +count.sales));
+			const salePrices = orders.reduce((prev, cur) => +prev + +cur, 0);
+			res.status(200).json({ productPrices, salePrices });
+		} else {
+			res.status(200).json({ productPrices, salePrices: 0 });
+		}
 	} catch (error) {
 		res.status(404).json(`GET_PRICE: ${error.message}`);
 	}
