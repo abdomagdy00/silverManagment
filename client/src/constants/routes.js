@@ -6,7 +6,7 @@ export const routes = {
 		},
 	},
 	remote: {
-		baseURL: "",
+		baseURL: "https://silver-managment-server.netlify.app/api",
 		headers: {
 			"Content-Type": "application/json",
 		},
