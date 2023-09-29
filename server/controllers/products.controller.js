@@ -76,8 +76,15 @@ export const CREATE_PRODUCT = async (req, res) => {
 
 		// Update Analysis
 		const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
-		const _product = await Products.findOne({ name: req.body.name.trim() });
-		await updateSales(sales, req.body, _product);
+		if (!sales) {
+			await Sales.create({ orders: [] });
+			const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
+			const _product = await Products.findOne({ name: req.body.name.trim() });
+			await updateSales(sales, req.body, _product);
+		} else {
+			const _product = await Products.findOne({ name: req.body.name.trim() });
+			await updateSales(sales, req.body, _product);
+		}
 
 		// Response
 		res.status(200).json({ success: "تم اضافه المنتج بنجاح" });

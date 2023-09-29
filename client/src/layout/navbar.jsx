@@ -15,7 +15,12 @@ export const Navbar = () => {
 				<h3 className="nav-title">فضيات خان باكوس</h3>
 			</Link>
 			<div className="left-side">
-				<i className={`fa ${toggler ? "fa-times" : "fa-bars"}`} onClick={handleToggler} />
+				<div className="flex-between">
+					<Link to="https://www.facebook.com/groups/418717862862700/?ref=share_group_link" target="_blank" className="text-primary">
+						جروب عائله الخان
+					</Link>
+					<i className={`fa ${toggler ? "fa-times" : "fa-bars"}`} onClick={handleToggler} />
+				</div>
 				<div className={`dropdown ${toggler ? "open" : ""}`}>
 					<Link to="/products" className="option" onClick={handleToggler}>
 						<i className="fa fa-table" />

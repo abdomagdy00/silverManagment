@@ -3,7 +3,6 @@ import { Sales } from "../model/index.js";
 export const updateSales = async (sales, body, product) => {
 	const orderIndex = sales.orders.findIndex((order) => order.name === body.name.trim());
 	// Increament Buy
-	console.log(+body.count > +product.count);
 	if (+body.count > +product.count) {
 		if (orderIndex !== -1) {
 			// Update Order
@@ -37,7 +36,11 @@ export const GET_SALES = async (req, res) => {
 		const { day, month } = req.query;
 
 		if (day) {
-			const sales = await Sales.find({ date: day });
+			const year = day.slice(0, 4);
+			const month = day.slice(5, 7);
+			const days = day.slice(8, 10);
+
+			const sales = await Sales.findOne({ date: `${+month}/${+days}/${+year}` });
 			return res.status(200).json(sales);
 		}
 

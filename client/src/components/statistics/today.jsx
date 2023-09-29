@@ -19,7 +19,7 @@ export const Today = () => {
 	// Get Total Prices For Days Table
 	useEffect(() => {
 		if (!data) return;
-		const _total = data[0].orders.map(({ price, weight, count: { buy, sales }, customePrice: { price: cPrice } }) => {
+		const _total = data?.orders.map(({ price, weight, count: { buy, sales }, customePrice: { price: cPrice } }) => {
 			const _sales = price === "none" ? +cPrice * +weight * +sales : +price * +weight * +sales;
 			const _buy = price === "none" ? +cPrice * +weight * +buy : +price * +weight * +buy;
 			return { sales: _sales, buy: _buy };
@@ -52,8 +52,8 @@ export const Today = () => {
 			</label>
 
 			<Table {...tableOptions}>
-				{data?.length
-					? data[0]?.orders?.map(({ name, weight, count, price, silverType, customePrice, catagory, gem }, i) => (
+				{data
+					? data?.orders?.map(({ name, weight, count, price, silverType, customePrice, catagory, gem }, i) => (
 							<tr key={i} style={{ background: i % 2 ? "" : "rgba(147, 14, 132, 0.1)", color: +count === 0 ? "gray" : +count <= 5 ? "#d78c1b" : "black" }}>
 								<td style={{ fontWeight: "bold" }}>{name}</td>
 								<td>
