@@ -1,7 +1,7 @@
 @use "@/assets/sass/mixins" as *;
 
 .header-section {
-	@include linear-background("@/assets/images/banner.png", cover, initial, (rgba(black, 0), rgba(black, 0.2)));
+	@include linear-background("@/assets/images/banner-1.png", cover, initial, (rgba(black, 0), rgba(black, 0.2)));
 	@include flex(space-between, center);
 	color: get(white);
 	min-height: 80px;

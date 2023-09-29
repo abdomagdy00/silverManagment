@@ -1,4 +1,4 @@
-import { Header, Search } from "@/components";
+import { Header, Footer, Search } from "@/components";
 import "./styles/home.scss";
 
 export const Home = () => {
@@ -6,6 +6,7 @@ export const Home = () => {
 		<div className="">
 			<Header />
 			<Search />
+			<Footer />
 		</div>
 	);
 };

@@ -1,9 +1,13 @@
-export * from "./header";
-export * from "./search";
-export * from "./table";
+// Home
+export * from "./home/header";
+export * from "./home/footer";
+export * from "./home/search";
 
-export * from "./select";
-export * from "./image";
+// Public
+export * from "./public/select";
+export * from "./public/image";
+export * from "./public/table";
 
+// Statistics
 export * from "./statistics/today";
 export * from "./statistics/month";

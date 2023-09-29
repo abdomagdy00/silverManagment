@@ -1,0 +1,31 @@
+@use "@/assets/sass/mixins" as *;
+
+.footer-section {
+	padding: 10px;
+	.price {
+		width: 100%;
+		img {
+			width: 100%;
+		}
+	}
+	.footer {
+		.heading {
+			@include flex(center, center);
+			gap: 0.5rem;
+			i {
+				color: get(primary);
+			}
+		}
+		.services {
+			@include linear-background("@/assets/images/servers.png", cover, initial, (rgba(black, 0.5), rgba(black, 0.3)));
+			color: get(white);
+			padding: 20px;
+			line-height: 2;
+			text-align: center;
+			div {
+				@include flex(center, center);
+				gap: 0.5rem;
+			}
+		}
+	}
+}

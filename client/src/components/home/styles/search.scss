@@ -1,7 +1,7 @@
 @use "@/assets/sass/mixins" as *;
 
 .search-section {
-	@include linear-background("@/assets/images/banner.png", cover, initial, (rgba(black, 0), rgba(black, 0.2)));
+	@include linear-background("@/assets/images/banner-2.png", cover, initial, (rgba(black, 0), rgba(black, 0.2)));
 	@include flex(center, center);
 	min-height: 200px;
 	margin-top: 40px;
