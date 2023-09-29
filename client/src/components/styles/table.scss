@@ -1,0 +1,37 @@
+@use "@/assets/sass/mixins" as *;
+
+.table {
+	min-height: calc(100vh - 67px);
+	width: 100%;
+	table-layout: auto;
+	th,
+	td {
+		white-space: nowrap;
+		padding: 10px;
+		text-align: center;
+	}
+
+	.table-head,
+	.table-foot {
+		.head-title {
+			th,
+			td {
+				font-size: 1.5rem;
+				letter-spacing: 2px;
+				text-align: start;
+			}
+		}
+	}
+
+	.table-body {
+		.controllers {
+			.fa-trash-alt {
+				color: #dc143c;
+				margin-left: 5px;
+			}
+			.fa-edit {
+				color: #9f9c04;
+			}
+		}
+	}
+}

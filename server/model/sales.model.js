@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 
 const schema = new Schema({
-	date: { type: Date, default: new Date().toLocaleDateString() },
+	date: { type: String, default: new Date().toLocaleDateString("en-CA") },
 	orders: [
 		{
 			name: { type: String, trim: true },

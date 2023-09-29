@@ -25,6 +25,7 @@
 		i {
 			color: get(primary);
 			font-size: 16px;
+			cursor: pointer;
 		}
 		.dropdown {
 			@include fixed(tl, 47px, 0);

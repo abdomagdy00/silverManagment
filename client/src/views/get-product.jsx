@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { formState } from "@/constants";
 import { useAxios } from "@/hooks/useAxios";
 import { Alert } from "@/layout";
 import "./styles/product.scss";
 
 export const GetProduct = () => {
-	const { error, refetch } = useAxios();
+	const { error: getError, refetch: getRefetch } = useAxios();
+	const { data: saleData, isSubmitted: saleIsSubmitted, error: saleError, refetch: saleRefetch } = useAxios();
 	const [formData, setFormData] = useState(formState);
 	const [total, setTotal] = useState("السعر الاجمالي");
+	const [openWidget, setOpenWidget] = useState(false);
+	const [saleCount, setSaleCount] = useState(0);
 	const { id } = useParams();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		(async () => {
-			const { data, loading, error } = await refetch("post", `/products/get-product`, { _id: id });
+			const { data, loading, error } = await getRefetch("get", `/products/get-product/${id}`);
 			if (!loading && !error && data?.name) setFormData(() => data);
 		})();
-	}, [id]);
+	}, [id, saleData]);
 
 	useEffect(() => {
 		if (formData.silverType === "اخري") {
@@ -30,14 +34,39 @@ export const GetProduct = () => {
 		}
 	}, [formData]);
 
+	const handleSales = async () => {
+		const { img, count: fCount, description, ...form } = formData;
+
+		if (!saleCount) return;
+		const count = fCount - saleCount;
+
+		if (count < 0) return alert("لا يتوفر هذا العدد");
+		const { loading, error } = await saleRefetch("put", `/products/update-product/${id}`, { ...form, count });
+
+		if (!loading && !error) {
+			setOpenWidget(false);
+			setTimeout(() => navigate("/"), 2000);
+		}
+	};
+
 	return (
 		<div className="get-product">
 			<h1 className="title">عرض المنتج</h1>
-			{error && <Alert message={error} error />}
+			{(getError || saleError) && <Alert message={getError || saleError} error />}
+			{saleIsSubmitted && !saleError && <Alert message={saleData?.success} success />}
 
 			<div className="wrapper">
 				<div className="file">
 					<img src={formData.img} alt="file" />
+				</div>
+
+				<div className="controllers">
+					<button type="button" className="edit-btn" onClick={() => navigate(`/products/update-product`, { state: formData })}>
+						تعديل
+					</button>
+					<button type="button" className="sale-btn" onClick={() => setOpenWidget(true)}>
+						بيع
+					</button>
 				</div>
 
 				<div className="">
@@ -84,9 +113,19 @@ export const GetProduct = () => {
 
 				<div className="">
 					<label htmlFor="">التفاصيل:</label>
-					<div className="field">{formData.description}</div>
+					<div className="field">{formData.description || "لا يوجد"}</div>
 				</div>
 			</div>
+
+			<div className={`sale-product ${openWidget ? "" : "hidden"}`}>
+				<i className="fa fa-times" onClick={() => setOpenWidget(false)} />
+				<h3 className="sale-title">العدد المراد بيعه</h3>
+				<input type="number" value={saleCount} placeholder="العدد المراد بيعه" onChange={(e) => setSaleCount(() => e.target.value)} />
+				<button className="btn w-full" onClick={handleSales}>
+					بيع
+				</button>
+			</div>
+			<div className={`overlay ${openWidget ? "" : "hidden"}`} onClick={() => setOpenWidget(false)} />
 		</div>
 	);
 };

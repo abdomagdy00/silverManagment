@@ -59,7 +59,7 @@ export const UpdateProduct = () => {
 		const { _id, ..._formData } = formData;
 
 		const { data, isSubmitted, error } = await refetch("put", `/products/update-product/${_id}`, _formData);
-		if (data?.success && isSubmitted && !error) setTimeout(() => navigate("/products"), 2000);
+		if (data?.success && isSubmitted && !error) setTimeout(() => navigate("/"), 2000);
 	};
 
 	return (

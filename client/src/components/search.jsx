@@ -41,7 +41,7 @@ export const Search = () => {
 					<i className="fa fa-search" />
 				</div>
 
-				<div className={`searchlist ${toggler ? "" : "hidden"}`}>
+				<div className={`searchlist ${toggler && searchResult.length ? "" : "hidden"}`}>
 					{error && <p className="option">{error}</p>}
 
 					{loading && <p className="option">Loading...</p>}

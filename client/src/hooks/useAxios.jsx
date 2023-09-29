@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { routes } from "@/constants";
 import axios from "axios";
 
-const router = axios.create(routes.remote);
+const router = axios.create(routes.locale);
 
 export const useAxios = (method, url, body, options) => {
 	const [data, setData] = useState();

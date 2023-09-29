@@ -22,9 +22,10 @@ export const GET_PRODUCTS = async (req, res) => {
 
 export const GET_PRODUCT = async (req, res) => {
 	try {
-		if (!req.body) return res.status(400).json({ error: "يجب ادخال التفاصيل المطلوبه للمنتج." });
+		const { id } = req.params;
+		if (!id) return res.status(400).json({ error: "يجب ادخال Id الخاص بالمنتج" });
 
-		const product = await Products.findOne(req.body);
+		const product = await Products.findById(id);
 		res.status(200).json(product);
 	} catch (error) {
 		res.status(404).json(`GET_PRODUCT: ${error.message}`);
@@ -39,7 +40,7 @@ export const GET_TOTAL_PRICE = async (req, res) => {
 		const productPrices = prices.reduce((prev, cur) => prev + cur, 0);
 
 		// Today Sales
-		const sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
+		const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
 		if (sales) {
 			const orders = sales?.orders.map(({ price, weight, count, customePrice: { price: cPrice } }) => (price === "none" ? +cPrice * +weight * +count.sales : +price * +weight * +count.sales));
 			const salePrices = orders.reduce((prev, cur) => +prev + +cur, 0);
@@ -74,7 +75,7 @@ export const CREATE_PRODUCT = async (req, res) => {
 		await Products.create(req.body);
 
 		// Update Analysis
-		const sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
+		const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
 		const _product = await Products.findOne({ name: req.body.name.trim() });
 		await updateSales(sales, req.body, _product);
 
@@ -99,10 +100,10 @@ export const UPDATE_PRODUCT = async (req, res) => {
 		await Products.findByIdAndUpdate(id, body, { new: true });
 
 		// Update Analysis
-		let sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
+		let sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
 		if (!sales) {
 			await Sales.create({ orders: [] });
-			let _sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
+			let _sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
 			_sales && (await updateSales(_sales, body, product));
 		} else {
 			await updateSales(sales, body, product);
@@ -126,7 +127,7 @@ export const DELETE_PRODUCT = async (req, res) => {
 		await Products.findByIdAndDelete(id);
 
 		// Update Analysis
-		const sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
+		const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
 		updateSales(sales, product, product);
 
 		res.status(200).json({ success: "تم حذف المنتج بنجاح" });

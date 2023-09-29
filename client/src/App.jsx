@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Home, GetProducts, GetProduct, AddProduct, UpdateProduct } from "@/views";
+import { Home, GetProducts, GetProduct, AddProduct, UpdateProduct, Statistics } from "@/views";
 import { Wrapper } from "@/layout";
 
 function App() {
@@ -8,6 +8,7 @@ function App() {
 			<Route path="*" element="Route Not Defined" />
 			<Route path="/" element={<Wrapper />}>
 				<Route index element={<Home />} />
+				<Route path="statistics" element={<Statistics />} />
 			</Route>
 			<Route path="/products" element={<Wrapper />}>
 				<Route index element={<GetProducts />} />

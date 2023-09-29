@@ -6,7 +6,7 @@ export const router = express.Router();
 
 // GET
 router.get("/get-products", GET_PRODUCTS);
-router.post("/get-product", GET_PRODUCT);
+router.get("/get-product/:id", GET_PRODUCT);
 router.get("/list-by-key", LIST_BY_KEY);
 router.get("/get-total-prices", GET_TOTAL_PRICE);
 

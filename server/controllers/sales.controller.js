@@ -34,6 +34,17 @@ export const updateSales = async (sales, body, product) => {
 
 export const GET_SALES = async (req, res) => {
 	try {
+		const { day, month } = req.query;
+
+		if (day) {
+			const sales = await Sales.find({ date: day });
+			return res.status(200).json(sales);
+		}
+
+		if (month) {
+			return;
+		}
+
 		const sales = await Sales.find();
 		res.status(200).json(sales);
 	} catch (error) {
@@ -41,13 +52,11 @@ export const GET_SALES = async (req, res) => {
 	}
 };
 
-export const GET_TODAY_SALES = async (req, res) => {
+export const CREATE_SALES = async (req, res) => {
 	try {
-		const sales = await Sales.findOne({ date: new Date().toLocaleDateString() });
-		const orders = sales.orders.map(({ price, weight, count, customePrice: { price: cPrice } }) => (price === "none" ? +cPrice * +weight * count.sales : +price * +weight * count.sales));
-		const total = orders.reduce((prev, cur) => +prev + +cur, 0);
-		res.status(200).json(total);
+		const sale = await Sales.create({ orders: [] });
+		res.status(200).json(sale);
 	} catch (error) {
-		res.status(404).json(`GET_TODAY_SALES: ${error.message}`);
+		res.status(404).json(`CREATE_SALES: ${error.message}`);
 	}
 };

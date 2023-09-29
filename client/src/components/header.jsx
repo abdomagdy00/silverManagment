@@ -8,11 +8,11 @@ export const Header = () => {
 		<header className="header-section">
 			<div className="">
 				<h4 className="subtitle">الرصيد</h4>
-				<span className="price">{!loading && (data?.salePrices || "00,00")}</span>
+				<span className="price">{!loading && (data?.salePrices?.toLocaleString() || "00,00")}</span>
 			</div>
 			<div className="">
 				<h4 className="subtitle">الاجمالي</h4>
-				<span className="price">{!loading && (data?.productPrices || "00,00")}</span>
+				<span className="price">{!loading && (data?.productPrices?.toLocaleString() || "00,00")}</span>
 			</div>
 		</header>
 	);

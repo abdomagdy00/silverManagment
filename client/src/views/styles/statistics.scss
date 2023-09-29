@@ -1,0 +1,21 @@
+@use "@/assets/sass/mixins" as *;
+
+.statistics-section {
+	margin-top: 47px;
+	padding: 10px;
+	overflow-x: auto;
+	.calender {
+		background-color: get(lightWhite);
+		width: 100%;
+		padding: 10px 20px;
+		border-radius: 8px;
+		input {
+			background-color: transparent;
+		}
+	}
+	.statistics-title {
+		color: get(primary);
+		text-align: center;
+		font-size: 1.5rem;
+	}
+}
