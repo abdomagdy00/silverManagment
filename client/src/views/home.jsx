@@ -1,5 +1,4 @@
 import { Header, Footer, Search } from "@/components";
-import "./styles/home.scss";
 
 export const Home = () => {
 	return (

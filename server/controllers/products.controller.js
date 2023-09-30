@@ -46,6 +46,7 @@ export const GET_TOTAL_PRICE = async (req, res) => {
 			const salePrices = orders.reduce((prev, cur) => +prev + +cur, 0);
 			res.status(200).json({ productPrices, salePrices });
 		} else {
+			await Sales.create({ orders: [] });
 			res.status(200).json({ productPrices, salePrices: 0 });
 		}
 	} catch (error) {
@@ -68,23 +69,17 @@ export const LIST_BY_KEY = async (req, res) => {
 
 export const CREATE_PRODUCT = async (req, res) => {
 	try {
-		const product = await Products.findOne({ name: req.body.name.trim() });
-		if (product) return res.status(400).json({ error: "هذا المنتج موجود بالفعل" });
+		const body = req.body;
+		const isExist = await Products.exists({ name: body.name.trim() });
+		if (isExist) return res.status(400).json({ error: "هذا المنتج موجود بالفعل" });
 
 		// Add Products
-		await Products.create(req.body);
+		await Products.create(body);
 
 		// Update Analysis
 		const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
-		if (!sales) {
-			await Sales.create({ orders: [] });
-			const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
-			const _product = await Products.findOne({ name: req.body.name.trim() });
-			await updateSales(sales, req.body, _product);
-		} else {
-			const _product = await Products.findOne({ name: req.body.name.trim() });
-			await updateSales(sales, req.body, _product);
-		}
+		const product = await Products.findOne({ name: body.name.trim() });
+		await updateSales(sales, body, product);
 
 		// Response
 		res.status(200).json({ success: "تم اضافه المنتج بنجاح" });

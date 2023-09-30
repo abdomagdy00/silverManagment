@@ -3,13 +3,8 @@ import { routes } from "@/constants";
 import axios from "axios";
 
 let router;
-if (import.meta.env.MODE === "development") {
-	router = axios.create(routes.locale);
-	console.log("development");
-} else {
-	router = axios.create(routes.remote);
-	console.log("production");
-}
+if (import.meta.env.MODE === "development") router = axios.create(routes.locale);
+else router = axios.create(routes.remote);
 
 export const useAxios = (method, url, body, options) => {
 	const [data, setData] = useState();

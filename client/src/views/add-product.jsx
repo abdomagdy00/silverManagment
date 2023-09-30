@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { SelectBox, FileInput } from "@/components";
 import { Alert } from "@/layout";
 import { useAxios } from "@/hooks/useAxios";
-import { user } from "@/assets";
+import { profile } from "@/assets";
 import "./styles/product.scss";
 
 export const AddProduct = () => {
@@ -55,7 +55,7 @@ export const AddProduct = () => {
 			} else if (formData.img?.startsWith("data:image/jpeg;base64")) {
 				setFormData((f) => ({ ...f, img: formData.img }));
 			} else {
-				setFormData((f) => ({ ...f, img: user }));
+				setFormData((f) => ({ ...f, img: profile }));
 			}
 			return;
 		}

@@ -1,7 +1,7 @@
-import { user } from "@/assets";
+import { profile } from "@/assets";
 
 export const formState = {
-	img: user,
+	img: profile,
 	name: "",
 	count: "",
 	description: "",

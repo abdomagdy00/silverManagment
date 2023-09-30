@@ -1,7 +1,6 @@
 @use "@/assets/sass/mixins" as *;
 
 .footer-section {
-	padding: 10px;
 	.price {
 		width: 100%;
 		img {
@@ -19,7 +18,7 @@
 		.services {
 			@include linear-background("@/assets/images/servers.png", cover, initial, (rgba(black, 0.5), rgba(black, 0.3)));
 			color: get(white);
-			padding: 20px;
+			padding: 20px 5px;
 			line-height: 2;
 			text-align: center;
 			div {
