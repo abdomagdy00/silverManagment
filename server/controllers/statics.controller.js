@@ -2,10 +2,8 @@ import { Products } from "../model/index.js";
 import { readFileSync, writeFileSync } from "fs";
 import { join } from "path";
 
-const __dirname = process.cwd();
-
-const SilverTypes = JSON.parse(readFileSync(join(__dirname, "data", "silverTypes.json"), "utf-8")) || [];
-const Gems = JSON.parse(readFileSync(join(__dirname, "data", "gems.json"), "utf-8")) || [];
+const SilverTypes = JSON.parse(readFileSync(join(process.cwd(), "data", "silverTypes.json"), "utf-8")) || [];
+const Gems = JSON.parse(readFileSync(join(process.cwd(), "data", "gems.json"), "utf-8")) || [];
 
 const updateData = (data, flag) => {
 	if (flag === 0) {
