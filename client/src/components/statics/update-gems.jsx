@@ -61,10 +61,10 @@ export const UpdateGems = () => {
 			<div className="title">نوع الحجر</div>
 
 			<Table {...tableOptions}>
-				{gems?.map(({ id, name }, i) => (
-					<tr key={id} style={i % 2 ? {} : { background: "rgba(147, 14, 132, 0.1)", fontWeight: 600 }}>
+				{gems?.map(({ _id, name }, i) => (
+					<tr key={i} style={i % 2 ? {} : { background: "rgba(147, 14, 132, 0.1)", fontWeight: 600 }}>
 						<td className="controllers" style={{ width: 16 }}>
-							<i className="fa fa-edit" onClick={() => setFormData({ type: "update", id, prev: name, name, state: true })} />
+							<i className="fa fa-edit" onClick={() => setFormData({ name, type: "update", id: _id, prev: name, state: true })} />
 						</td>
 						<td>{name}</td>
 					</tr>
