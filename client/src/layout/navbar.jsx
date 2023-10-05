@@ -43,17 +43,17 @@ export const Navbar = () => {
 					</Link>
 					<div className="nested-dropdown">
 						<span className="option" onClick={handleNested}>
-							<p className="name">التعديل الافتراضي</p>
+							<p className="name">تعديل الثوابت</p>
 							<i className={`fas ${nested ? "fa-angle-down" : "fa-angle-left"}`} />
 						</span>
 						<div className={`links ${nested ? "" : "hide-height"}`}>
 							<Link to="/update/silverTypes" className="option" onClick={handleToggler}>
 								<i className="fas fa-ring" />
-								<p className="name">تعديل نوع الخاتم</p>
+								<p className="name">نوع الخاتم</p>
 							</Link>
 							<Link to="/update/gems" className="option" onClick={handleToggler}>
 								<i className="far fa-gem" />
-								<p className="name">تعديل نوع الحجر</p>
+								<p className="name">نوع الحجر</p>
 							</Link>
 						</div>
 					</div>
