@@ -36,7 +36,7 @@ export const useAxios = (method, url, body, options) => {
 		} catch (error) {
 			const err = error?.response?.data?.error || error?.message || "Something Has An Error.";
 			setError(() => err);
-			return { loading: false, error: err, isSubmitted: true, status: response.status };
+			return { loading: false, error: err, isSubmitted: true, status: error?.status };
 		} finally {
 			setLoading(false);
 			setIsSubmitted(true);

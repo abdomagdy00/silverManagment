@@ -2,14 +2,18 @@
 
 .alert-section {
 	@include fixed(tr, 57px, 10px);
-	padding: 5px 20px;
 	z-index: 1002;
 	border-radius: 10px;
 	&.success {
 		background-color: green;
+		padding: 5px 20px;
 	}
 	&.error {
 		background-color: red;
+		padding: 5px 20px;
+	}
+	&.end {
+		display: none;
 	}
 	span {
 		color: get(white);

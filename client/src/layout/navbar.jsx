@@ -5,8 +5,15 @@ import "./styles/navbar.scss";
 
 export const Navbar = () => {
 	const [toggler, setToggler] = useState(false);
+	const [nested, setNested] = useState(false);
 
-	const handleToggler = () => setToggler((t) => !t);
+	const handleToggler = () => {
+		setToggler((t) => !t);
+		setNested(() => false);
+	};
+	const handleNested = () => {
+		setNested((n) => !n);
+	};
 
 	return (
 		<nav className="navbar-section">
@@ -22,18 +29,34 @@ export const Navbar = () => {
 					<i className={`fa ${toggler ? "fa-times" : "fa-bars"}`} onClick={handleToggler} />
 				</div>
 				<div className={`dropdown ${toggler ? "open" : ""}`}>
-					<Link to="/products" className="option" onClick={handleToggler}>
+					<Link className="option" to="/products" onClick={handleToggler}>
 						<i className="fa fa-table" />
 						<p className="name">عرض المنتجات</p>
 					</Link>
-					<Link to="/products/add-product" className="option" onClick={handleToggler}>
+					<Link className="option" to="/products/add-product" onClick={handleToggler}>
 						<i className="fa fa-plus" />
 						<p className="name">اضافة منتج</p>
 					</Link>
-					<Link to="/statistics" className="option" onClick={handleToggler}>
+					<Link className="option" to="/statistics" onClick={handleToggler}>
 						<i className="fas fa-chart-line" />
 						<p className="name">الاحصائيات</p>
 					</Link>
+					<div className="nested-dropdown">
+						<span className="option" onClick={handleNested}>
+							<p className="name">التعديل الافتراضي</p>
+							<i className={`fas ${nested ? "fa-angle-down" : "fa-angle-left"}`} />
+						</span>
+						<div className={`links ${nested ? "" : "hide-height"}`}>
+							<Link to="/update/silverTypes" className="option" onClick={handleToggler}>
+								<i className="fas fa-ring" />
+								<p className="name">تعديل نوع الخاتم</p>
+							</Link>
+							<Link to="/update/gems" className="option" onClick={handleToggler}>
+								<i className="far fa-gem" />
+								<p className="name">تعديل نوع الحجر</p>
+							</Link>
+						</div>
+					</div>
 				</div>
 			</div>
 		</nav>

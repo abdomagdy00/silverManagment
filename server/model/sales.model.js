@@ -11,7 +11,6 @@ const schema = new Schema({
 			gem: String,
 			silverType: String,
 			price: String,
-			customePrice: { silverType: String, price: String },
 		},
 	],
 });

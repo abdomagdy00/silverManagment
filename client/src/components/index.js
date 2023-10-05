@@ -11,3 +11,7 @@ export * from "./public/table";
 // Statistics
 export * from "./statistics/today";
 export * from "./statistics/month";
+
+// Statics
+export * from "./statics/update-silverTypes";
+export * from "./statics/update-gems";

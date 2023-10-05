@@ -9,9 +9,9 @@ export const GetProduct = () => {
 	const { error: getError, refetch: getRefetch } = useAxios();
 	const { data: saleData, isSubmitted: saleIsSubmitted, error: saleError, refetch: saleRefetch } = useAxios();
 	const [formData, setFormData] = useState(formState);
-	const [total, setTotal] = useState("السعر الاجمالي");
+	const [total, setTotal] = useState("");
 	const [openWidget, setOpenWidget] = useState(false);
-	const [saleCount, setSaleCount] = useState(0);
+	const [saleCount, setSaleCount] = useState("");
 	const { id } = useParams();
 	const navigate = useNavigate();
 
@@ -23,15 +23,9 @@ export const GetProduct = () => {
 	}, [id, saleData]);
 
 	useEffect(() => {
-		if (formData.silverType === "اخري") {
-			const price = formData.customePrice.price;
-			const weight = formData.weight;
-			setTotal(() => +price * +weight);
-		} else {
-			const price = formData.price;
-			const weight = formData.weight;
-			setTotal(() => +price * +weight);
-		}
+		const price = formData.price;
+		const weight = formData.weight;
+		setTotal(() => +price * +weight);
 	}, [formData]);
 
 	const handleSales = async () => {
@@ -87,17 +81,17 @@ export const GetProduct = () => {
 				<div className="flex-between">
 					<div className="w-full">
 						<label htmlFor="">نوع الفضه:</label>
-						<div className="field">{formData?.silverType === "اخري" ? formData?.customePrice?.silverType : formData?.silverType}</div>
+						<div className="field">{formData.silverType}</div>
 					</div>
 					<div className="w-full">
 						<label htmlFor="">سعر الجرام:</label>
-						<div className="field">{formData?.price === "none" ? formData?.customePrice?.price : formData?.price}</div>
+						<div className="field">{formData.price}</div>
 					</div>
 				</div>
 
 				<div className="">
 					<label htmlFor="">السعر الاجمالي:</label>
-					<div className="field">{total}</div>
+					<div className="field">{total || "السعر الاجمالي"}</div>
 				</div>
 
 				<div className="flex-between">

@@ -11,7 +11,7 @@ export const GET_PRODUCTS = async (req, res) => {
 			.select(keys)
 			.limit(limit || 999);
 
-		const prices = products.map(({ price, count, weight, customePrice: { price: cPrice } }) => (price === "none" ? +cPrice * +count * +weight : +price * +count * +weight)) || [];
+		const prices = products.map(({ price, count, weight }) => +price * +count * +weight) || [];
 		const total = prices.reduce((prev, cur) => prev + cur, 0);
 
 		res.status(200).json({ count: products.length, totalPrice: total || 0, result: products });
@@ -36,13 +36,13 @@ export const GET_TOTAL_PRICE = async (req, res) => {
 	try {
 		// Products Price
 		const products = await Products.find();
-		const prices = products.map(({ price, count, weight, customePrice: { price: cPrice } }) => (price === "none" ? +cPrice * count * +weight : +price * count * +weight)) || [];
+		const prices = products.map(({ price, count, weight }) => +price * count * +weight) || [];
 		const productPrices = prices.reduce((prev, cur) => prev + cur, 0);
 
 		// Today Sales
 		const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
 		if (sales) {
-			const orders = sales?.orders.map(({ price, weight, count, customePrice: { price: cPrice } }) => (price === "none" ? +cPrice * +weight * +count.sales : +price * +weight * +count.sales));
+			const orders = sales?.orders.map(({ price, weight, count }) => +price * +weight * +count.sales);
 			const salePrices = orders.reduce((prev, cur) => +prev + +cur, 0);
 			res.status(200).json({ productPrices, salePrices });
 		} else {
@@ -79,7 +79,7 @@ export const CREATE_PRODUCT = async (req, res) => {
 		// Update Analysis
 		const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
 		const product = await Products.findOne({ name: body.name.trim() });
-		await updateSales(sales, body, product);
+		await updateSales(sales, body, product, true);
 
 		// Response
 		res.status(200).json({ success: "تم اضافه المنتج بنجاح" });

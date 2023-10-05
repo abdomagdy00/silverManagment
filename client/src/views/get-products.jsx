@@ -5,7 +5,6 @@ import { useAxios } from "@/hooks/useAxios";
 import { Loading, Error, Alert } from "@/layout";
 import "./styles/get-products.scss";
 
-const headers = ["تحكم", "العدد", "الاسم", "الوزن", "سعر الجرام", "الاجمالي", "نوع الفضه", "القسم", "الحجر", "التفاصيل"];
 export const GetProducts = () => {
 	const { data, loading, error, refetch } = useAxios();
 	const { isSubmitted, refetch: deleteRefetch } = useAxios();
@@ -14,7 +13,7 @@ export const GetProducts = () => {
 
 	useEffect(() => {
 		(async () => {
-			await refetch("get", "/products/get-products?name&count&weight&price&silverType&catagory&gem&description&customePrice");
+			await refetch("get", "/products/get-products?name&count&weight&price&silverType&catagory&gem&description");
 		})();
 	}, [isSubmitted]);
 
@@ -34,7 +33,7 @@ export const GetProducts = () => {
 	};
 
 	const tableOptions = {
-		headers,
+		headers: ["تحكم", "العدد", "الاسم", "الوزن", "سعر الجرام", "سعر الخاتم", "نوع الفضه", "القسم", "الحجر", "التفاصيل"],
 		footer: ["اجمالي سعر المخزن"],
 		tableTitle: "عرض المنتجات",
 		prices: [data?.totalPrice || 0],
@@ -49,18 +48,18 @@ export const GetProducts = () => {
 			{alert?.state === "error" && <Alert error message={alert.message} />}
 
 			<Table {...tableOptions}>
-				{data?.result?.map(({ _id, name, count, weight, price, silverType, customePrice, catagory, gem, description }, i) => (
+				{data?.result?.map(({ _id, name, count, weight, price, silverType, catagory, gem, description }, i) => (
 					<tr key={i} style={{ background: i % 2 ? "" : "rgba(147, 14, 132, 0.1)", color: +count === 0 ? "gray" : +count <= 5 ? "#d78c1b" : "black" }}>
 						<td className="controllers">
 							<i className="fa fa-trash-alt" onClick={() => handleDelete(_id)} />
-							<i className="fa fa-edit" onClick={() => handleEdit({ _id, name, count, weight, price, silverType, customePrice, catagory, gem, description })} />
+							<i className="fa fa-edit" onClick={() => handleEdit({ _id, name, count, weight, price, silverType, catagory, gem, description })} />
 						</td>
 						<td>{count || "لا يوجد"}</td>
 						<td>{name}</td>
 						<td>{weight}</td>
-						<td>{customePrice?.price || price}</td>
-						<td>{Math.ceil((+customePrice?.price || +price) * +weight)}</td>
-						<td>{customePrice?.silverType || silverType}</td>
+						<td>{price}</td>
+						<td>{Math.ceil(+price * +weight)}</td>
+						<td>{silverType}</td>
 						<td>{catagory}</td>
 						<td>{gem}</td>
 						<td>{description || "لا يوجد"}</td>

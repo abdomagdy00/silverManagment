@@ -1,8 +1,18 @@
+import { useEffect, useState } from "react";
 import "./styles/alert.scss";
 
 export const Alert = ({ message, success, error }) => {
+	const [end, setEnd] = useState(false);
+
+	useEffect(() => {
+		setEnd(false);
+		setTimeout(() => {
+			setEnd(true);
+		}, 3000);
+	}, []);
+
 	return (
-		<div className={`alert-section ${success ? "success" : "error"}`}>
+		<div className={`alert-section ${success ? "success" : "error"} ${end ? "end" : ""}`}>
 			{success && (
 				<div className="success">
 					<i className="far fa-check-circle" />

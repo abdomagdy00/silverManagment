@@ -97,7 +97,6 @@ $vars: ("primary", "secondary", "white", "black", "dimWhite", "dimBlack", "light
 }
 
 $gaps: (5, 10, 15, 20, 25, 30);
-
 @each $gap in $gaps {
 	.gap-#{$gap} {
 		gap: #{$gap}px;

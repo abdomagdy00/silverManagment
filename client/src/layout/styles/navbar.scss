@@ -45,8 +45,23 @@
 				gap: 10px;
 				margin-bottom: 10px;
 				border-bottom: 1px solid get(lightWhite);
-				&:last-of-type {
-					margin-bottom: 0;
+				.name {
+					white-space: nowrap;
+				}
+			}
+			.nested-dropdown {
+				span.option {
+					justify-content: space-between;
+				}
+				.links {
+					background-color: get(white);
+					max-height: 170px;
+					width: 200px;
+					overflow: hidden;
+					padding-right: 10px;
+					.option:last-of-type {
+						margin-bottom: 0;
+					}
 				}
 			}
 		}

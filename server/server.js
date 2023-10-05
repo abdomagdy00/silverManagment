@@ -2,7 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-import { products, sales } from "./routes/index.js";
+import { products, sales, statics } from "./routes/index.js";
 import { corsOrigins, DBconnection } from "./configs/index.js";
 
 // Configs
@@ -17,6 +17,7 @@ app.use(express.urlencoded({ extended: true, limit: "100kb", parameterLimit: 100
 // Routes
 app.use("/api/products", products);
 app.use("/api/sales", sales);
+app.use("/api/statics", statics);
 app.use("/*", (req, res) => res.status(200).json({ method: req.method, path: req.url, website: "silver management", message: "This Route Is Not Exist." }));
 
 // Mongodb

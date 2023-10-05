@@ -1,33 +1,42 @@
 import { Sales } from "../model/index.js";
 
-export const updateSales = async (sales, body, product) => {
+export const updateSales = async (sales, body, product, isNew) => {
 	const orderIndex = sales.orders.findIndex((order) => order.name === body.name.trim());
-	// Increament Buy
-	if (+body.count > +product.count) {
-		if (orderIndex !== -1) {
-			// Update Order
-			sales.orders[orderIndex].count.buy += +body.count - +product.count;
-			await sales.save();
-		} else {
+	console.log(orderIndex, +body.count, +product?.count);
+
+	// Increament To Buy
+	if (+body.count > +product?.count) {
+		if (orderIndex === -1) {
 			// Create New Order
 			const buy = +body.count - +product.count;
 			sales.orders.push({ ...body, count: { buy, sales: "0" } });
 			await sales.save();
+		} else {
+			// Update Order
+			sales.orders[orderIndex].count.buy += +body.count - +product.count;
+			await sales.save();
 		}
 	}
 
-	// Increament Sales
+	// Increament To Sale
 	if (+body.count < +product.count) {
-		if (orderIndex !== -1) {
-			// Update Order
-			sales.orders[orderIndex].count.sales += +product.count - +body.count;
-			await sales.save();
-		} else {
+		if (orderIndex === -1) {
 			// Create New Order
 			const salesCount = +product.count - +body.count;
 			sales.orders.push({ ...body, count: { buy: "0", sales: salesCount } });
 			await sales.save();
+		} else {
+			// Update Order
+			sales.orders[orderIndex].count.sales += +product.count - +body.count;
+			await sales.save();
 		}
+	}
+
+	// Create New One
+	if (isNew) {
+		const buy = +body.count;
+		sales.orders.push({ ...body, count: { buy, sales: "0" } });
+		await sales.save();
 	}
 };
 

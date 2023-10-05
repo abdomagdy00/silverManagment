@@ -10,19 +10,16 @@ export const Today = () => {
 
 	// Fetch Days Table Data
 	useEffect(() => {
-		(async () => {
-			if (!calender) return;
-			await refetch("get", `/sales/get-sales?day=${calender}`);
-		})();
+		if (!calender) return;
+		(async () => await refetch("get", `/sales/get-sales?day=${calender}`))();
 	}, [calender]);
 
 	// Get Total Prices For Days Table
 	useEffect(() => {
 		if (!data) return;
-		const _total = data?.orders.map(({ price, weight, count: { buy, sales }, customePrice: { price: cPrice } }) => {
-			const _sales = price === "none" ? +cPrice * +weight * +sales : +price * +weight * +sales;
-			const _buy = price === "none" ? +cPrice * +weight * +buy : +price * +weight * +buy;
-			return { sales: _sales, buy: _buy };
+
+		const _total = data?.orders.map(({ price, weight, count: { buy, sales } }) => {
+			return { sales: +price * +weight * +sales, buy: +price * +weight * +buy };
 		});
 
 		const total = _total?.reduce(
@@ -53,7 +50,7 @@ export const Today = () => {
 
 			<Table {...tableOptions}>
 				{data
-					? data?.orders?.map(({ name, weight, count, price, silverType, customePrice, catagory, gem }, i) => (
+					? data?.orders?.map(({ name, weight, count, price, silverType, catagory, gem }, i) => (
 							<tr key={i} style={{ background: i % 2 ? "" : "rgba(147, 14, 132, 0.1)", color: +count === 0 ? "gray" : +count <= 5 ? "#d78c1b" : "black" }}>
 								<td style={{ fontWeight: "bold" }}>{name}</td>
 								<td>
@@ -61,9 +58,9 @@ export const Today = () => {
 									<p style={{ color: "red" }}>{+count.sales === 0 ? "0" : `${count.sales}+`}</p>
 								</td>
 								<td>{weight}</td>
-								<td>{customePrice?.price || price}</td>
-								<td>{Math.ceil((+customePrice?.price || +price) * +weight)}</td>
-								<td>{customePrice?.silverType || silverType}</td>
+								<td>{price}</td>
+								<td>{Math.ceil(+price * +weight)}</td>
+								<td>{silverType}</td>
 								<td>{catagory}</td>
 								<td>{gem}</td>
 							</tr>

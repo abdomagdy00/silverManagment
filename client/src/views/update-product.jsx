@@ -1,54 +1,30 @@
-import { silverTypeOptions, pricesOptions, catagoryOptions, gemOptions } from "@/constants";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAxios } from "@/hooks/useAxios";
 import { SelectBox } from "@/components";
 import { Alert } from "@/layout";
-import { useAxios } from "@/hooks/useAxios";
+import { catagoryOptions } from "@/constants";
 import "./styles/product.scss";
 
 export const UpdateProduct = () => {
 	const state = useLocation().state;
 	const { data, loading, error, isSubmitted, refetch } = useAxios();
+	const { data: options, error: optionsError } = useAxios("get", "/statics/get-data?silverTypes=1&gems=1");
 	const [formData, setFormData] = useState(state);
-	const [total, setTotal] = useState("السعر الاجمالي");
-	const [customePrice, setCustomePrice] = useState(false);
+	const [total, setTotal] = useState("");
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (formData.silverType === "اخري") {
-			const price = formData.customePrice.price;
-			const weight = formData.weight;
-			setTotal(() => +price * +weight);
-			setCustomePrice(() => true);
-		} else {
-			const price = formData.price;
-			const weight = formData.weight;
-			setTotal(() => +price * +weight);
-			setCustomePrice(() => false);
-		}
+		const price = formData.price;
+		const weight = formData.weight;
+		setTotal(() => +price * +weight);
 	}, [formData]);
 
-	const handleChange = ({ target: { id, name, value } }) => {
+	const handleChange = ({ target: { name, value } }) => {
 		if (name === "silverType") {
-			if (value === "اخري") {
-				setFormData((f) => ({ ...f, silverType: value }));
-				setCustomePrice(() => true);
-				return;
-			} else if (value) {
-				const silverType = silverTypeOptions.find((silverType) => silverType.name === value);
-				setFormData((f) => ({ ...f, silverType: value, price: silverType?.price || "", customePrice: { silverType: "", price: "" } }));
-				setCustomePrice(() => false);
-				return;
-			} else {
-				setFormData((f) => ({ ...f, silverType: "", price: "" }));
-				setCustomePrice(() => false);
-				return;
-			}
-		}
-
-		if (name === "custome") {
-			if (id === "silverType") return setFormData((f) => ({ ...f, customePrice: { ...f.customePrice, silverType: value } }));
-			if (id === "price") return setFormData((f) => ({ ...f, price: "none", customePrice: { ...f.customePrice, price: value } }));
+			const silverType = options?.silverTypes.find((silverType) => silverType.name === value);
+			setFormData((f) => ({ ...f, silverType: silverType?.name || "", price: silverType?.price || "" }));
+			return;
 		}
 
 		setFormData((f) => ({ ...f, [name]: value }));
@@ -66,6 +42,7 @@ export const UpdateProduct = () => {
 		<form className="update-product" onSubmit={handleSubmit}>
 			<h1 className="title">تعديل المنتج</h1>
 			{isSubmitted && error && <Alert message={error} error />}
+			{optionsError && <Alert message={optionsError} error />}
 			{isSubmitted && !error && data?.success && <Alert message={data.success} success />}
 
 			<div className="wrapper">
@@ -84,54 +61,35 @@ export const UpdateProduct = () => {
 					<input type="number" name="count" disabled={loading} placeholder="عدد القطع..." value={formData.count} onChange={handleChange} required />
 				</div>
 
-				{customePrice ? (
-					<div className="">
-						<div className="">
-							<label htmlFor="">نوع الفضه:</label>
-							<SelectBox label="نوع الفضه..." name="silverType" disabled={loading} value={formData.silverType} onChange={handleChange} options={silverTypeOptions} required />
-						</div>
-						<div className="flex-between">
-							<div className="">
-								<label htmlFor="">نوع الفضه الاخر:</label>
-								<input type="text" name="custome" id="silverType" disabled={loading} value={formData.customePrice.silverType} placeholder="نوع الفضه..." onChange={handleChange} required />
-							</div>
-							<div className="">
-								<label htmlFor="">سعر الجرام:</label>
-								<input type="number" name="custome" id="price" disabled={loading} value={formData.customePrice.price} placeholder="سعر المنتج..." onChange={handleChange} required />
-							</div>
-						</div>
+				<div className="flex-between">
+					<div className="w-full">
+						<label htmlFor="">نوع الفضه:</label>
+						<SelectBox label="نوع الفضه..." name="silverType" disabled={loading} value={formData.silverType} onChange={handleChange} options={options?.silverTypes} required />
 					</div>
-				) : (
-					<div className="flex-between">
-						<div className="">
-							<label htmlFor="">نوع الفضه:</label>
-							<SelectBox label="نوع الفضه..." name="silverType" disabled={loading} value={formData.silverType} onChange={handleChange} options={silverTypeOptions} required />
-						</div>
-						<div className="">
-							<label htmlFor="">سعر الجرام:</label>
-							<SelectBox label="سعر المنتج..." name="price" value={formData.price} onChange={handleChange} options={pricesOptions} disabled />
-						</div>
+					<div className="w-full">
+						<label htmlFor="">سعر الجرام:</label>
+						<input type="text" value={formData.price} placeholder="سعر الجرام..." disabled />
 					</div>
-				)}
+				</div>
 
 				<div className="">
-					<label htmlFor="">الاجمالي</label>
-					<input type="text" value={total} disabled />
+					<label htmlFor="">السعر الاجمالي:</label>
+					<input type="text" value={total} placeholder="السعر الاجمالي" disabled />
 				</div>
 
 				<div className="flex-between">
-					<div className="">
-						<label htmlFor="">اسم القسم</label>
+					<div className="w-full">
+						<label htmlFor="">اسم القسم:</label>
 						<SelectBox label="اسم القسم..." name="catagory" disabled={loading} value={formData.catagory} onChange={handleChange} options={catagoryOptions} required />
 					</div>
-					<div className="">
-						<label htmlFor="">نوع الحجر</label>
-						<SelectBox label="نوع الحجر..." name="gem" disabled={loading} value={formData.gem} onChange={handleChange} options={gemOptions} required />
+					<div className="w-full">
+						<label htmlFor="">نوع الحجر:</label>
+						<SelectBox label="نوع الحجر..." name="gem" disabled={loading} value={formData.gem} onChange={handleChange} options={options?.gems} required />
 					</div>
 				</div>
 
 				<div className="">
-					<label htmlFor="">التفاصيل</label>
+					<label htmlFor="">التفاصيل:</label>
 					<input type="text" name="description" disabled={loading} value={formData.description} placeholder="التفاصيل (اختياري)..." onChange={handleChange} />
 				</div>
 
