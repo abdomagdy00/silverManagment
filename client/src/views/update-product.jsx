@@ -73,8 +73,8 @@ export const UpdateProduct = () => {
 				</div>
 
 				<div className="">
-					<label htmlFor="">السعر الاجمالي:</label>
-					<input type="text" value={total} placeholder="السعر الاجمالي" disabled />
+					<label htmlFor="">السعر الخاتم:</label>
+					<input type="text" value={total} placeholder="السعر الخاتم" disabled />
 				</div>
 
 				<div className="flex-between">

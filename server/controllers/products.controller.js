@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Products, Sales } from "../model/index.js";
+import { Products, Sales, getDate } from "../model/index.js";
 import { updateSales } from "./sales.controller.js";
 
 export const GET_PRODUCTS = async (req, res) => {
@@ -40,7 +40,7 @@ export const GET_TOTAL_PRICE = async (req, res) => {
 		const productPrices = prices.reduce((prev, cur) => prev + cur, 0);
 
 		// Today Sales
-		const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
+		const sales = await Sales.findOne({ date: getDate(new Date()) });
 		if (sales) {
 			const orders = sales?.orders.map(({ price, weight, count }) => +price * +weight * +count.sales);
 			const salePrices = orders.reduce((prev, cur) => +prev + +cur, 0);
@@ -77,7 +77,7 @@ export const CREATE_PRODUCT = async (req, res) => {
 		await Products.create(body);
 
 		// Update Analysis
-		const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
+		const sales = await Sales.findOne({ date: getDate(new Date()) });
 		const product = await Products.findOne({ name: body.name.trim() });
 		await updateSales(sales, body, product, true);
 
@@ -102,10 +102,10 @@ export const UPDATE_PRODUCT = async (req, res) => {
 		await Products.findByIdAndUpdate(id, body, { new: true });
 
 		// Update Analysis
-		let sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
+		let sales = await Sales.findOne({ date: getDate(new Date()) });
 		if (!sales) {
 			await Sales.create({ orders: [] });
-			let _sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
+			let _sales = await Sales.findOne({ date: getDate(new Date()) });
 			_sales && (await updateSales(_sales, body, product));
 		} else {
 			await updateSales(sales, body, product);
@@ -129,7 +129,7 @@ export const DELETE_PRODUCT = async (req, res) => {
 		await Products.findByIdAndDelete(id);
 
 		// Update Analysis
-		const sales = await Sales.findOne({ date: new Date().toLocaleDateString("en-CA") });
+		const sales = await Sales.findOne({ date: getDate(new Date()) });
 		updateSales(sales, product, product);
 
 		res.status(200).json({ success: "تم حذف المنتج بنجاح" });

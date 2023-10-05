@@ -1,4 +1,4 @@
-import { Sales } from "../model/index.js";
+import { Sales, getDate } from "../model/index.js";
 
 export const updateSales = async (sales, body, product, isNew) => {
 	const orderIndex = sales.orders.findIndex((order) => order.name === body.name.trim());
@@ -43,13 +43,10 @@ export const updateSales = async (sales, body, product, isNew) => {
 export const GET_SALES = async (req, res) => {
 	try {
 		const { day, month } = req.query;
+		console.log();
 
 		if (day) {
-			const year = day.slice(0, 4);
-			const month = day.slice(5, 7);
-			const days = day.slice(8, 10);
-
-			const sales = await Sales.findOne({ date: `${+month}/${+days}/${+year}` });
+			const sales = await Sales.findOne({ date: getDate(day) });
 			return res.status(200).json(sales);
 		}
 

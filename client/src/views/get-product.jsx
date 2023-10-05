@@ -90,8 +90,8 @@ export const GetProduct = () => {
 				</div>
 
 				<div className="">
-					<label htmlFor="">السعر الاجمالي:</label>
-					<div className="field">{total || "السعر الاجمالي"}</div>
+					<label htmlFor="">السعر الخاتم:</label>
+					<div className="field">{total || "السعر الخاتم"}</div>
 				</div>
 
 				<div className="flex-between">

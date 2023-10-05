@@ -90,8 +90,8 @@ export const AddProduct = () => {
 				</div>
 
 				<div className="">
-					<label className="field-label">السعر الاجمالي:</label>
-					<input type="text" value={total} placeholder="السعر الاجمالي" disabled />
+					<label className="field-label">السعر الخاتم:</label>
+					<input type="text" value={total} placeholder="السعر الخاتم" disabled />
 				</div>
 
 				<div className="flex-between">

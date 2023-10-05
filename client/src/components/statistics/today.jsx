@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { calenderState } from "@/constants";
 import { useAxios } from "@/hooks/useAxios";
+import { getDate } from "@/constants";
 import { Table } from "@/components";
+import { Alert } from "@/layout";
 
 export const Today = () => {
 	const { data, error, isSubmitted, refetch } = useAxios();
 	const [totalSales, setTotalSales] = useState({ sales: 0, buy: 0 });
-	const [calender, setCalender] = useState(calenderState.day);
+	const [calender, setCalender] = useState(getDate(new Date()));
 
 	// Fetch Days Table Data
 	useEffect(() => {
@@ -32,7 +33,7 @@ export const Today = () => {
 	}, [data]);
 
 	const tableOptions = {
-		headers: ["الاسم", "العدد", "الوزن", "السعر", "الاجمالي", "نوع الفضه", "القسم", "نوع الحجر"],
+		headers: ["الاسم", "العدد", "الوزن", "سعر الجرام", "سعر الخاتم", "نوع الفضه", "القسم", "نوع الحجر"],
 		footer: ["مشتريات اليوم", "المبيعات اليوم"],
 		prices: [totalSales.buy, totalSales.sales],
 	};

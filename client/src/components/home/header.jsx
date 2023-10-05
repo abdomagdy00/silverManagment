@@ -7,11 +7,11 @@ export const Header = () => {
 	return (
 		<header className="header-section">
 			<div className="">
-				<h4 className="subtitle">الرصيد</h4>
+				<h4 className="subtitle">مبيعات اليوم</h4>
 				<span className="price">{!loading && (data?.salePrices?.toLocaleString() || "00,00")}</span>
 			</div>
 			<div className="">
-				<h4 className="subtitle">الاجمالي</h4>
+				<h4 className="subtitle">اجمالي البضائع</h4>
 				<span className="price">{!loading && (data?.productPrices?.toLocaleString() || "00,00")}</span>
 			</div>
 		</header>
